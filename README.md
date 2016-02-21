@@ -9,7 +9,7 @@ This package supports the IPADic only.
 
 Below is a simple go example that demonstrates how a simple text can be segmented.
 
-See aloso https://github.com/ikawaha/kagome 
+See also https://github.com/ikawaha/kagome 
 
 
 sample code:
