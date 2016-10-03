@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/ikawaha/kagome.ipadic.svg?branch=master)](https://travis-ci.org/ikawaha/kagome) [![BuildStatus(Windows)](https://ci.appveyor.com/api/projects/status/1y9pvcrdyarpmsy1/branch/master?svg=true)](https://ci.appveyor.com/project/ikawaha/kagome) [![Coverage Status](https://coveralls.io/repos/ikawaha/kagome.ipadic/badge.svg?branch=master&service=github)](https://coveralls.io/github/ikawaha/kagome?branch=master)  [![GoDoc](https://godoc.org/github.com/ikawaha/kagome.ipadic?status.svg)](https://godoc.org/github.com/ikawaha/kagome.ipadic)
+
 Kagome Japanese Morphological Analyzer (IPADic only)
 ===
 
