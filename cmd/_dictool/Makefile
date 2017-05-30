@@ -6,6 +6,7 @@ install: ipa_internal bindata ipa
 
 .PHONY: ipa_internal
 ipa_internal:
+	-mkdir -p ./dic/ipa
 	go run main.go ipa -mecab ./mecab-ipadic-2.7.0-20070801 -output ./dic/ipa/ -z=false
 
 .PHONY: ipa
@@ -18,6 +19,7 @@ bindata:
 
 .PHONY: clean
 clean:
-	rm ./bindata*.go
-	rm ipa.dic
+	-rm ./bindata*.go
+	-rm ipa.dic
+	-rm -rf ./dic
 
