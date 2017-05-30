@@ -95,7 +95,7 @@ func (p POSMap) add(pos string) POSID {
 
 // List returns a list whose index is POS ID and value is its name.
 func (p POSMap) List() []string {
-	ret := make([]string, len(p)+1, len(p)+1)
+	ret := make([]string, len(p)+1)
 	for k, v := range p {
 		ret[v] = k
 	}
