@@ -21,7 +21,6 @@ import (
 	"io"
 	"io/ioutil"
 	"os"
-	"runtime"
 	"strings"
 
 	"github.com/ikawaha/kagome.ipadic/tokenizer"
