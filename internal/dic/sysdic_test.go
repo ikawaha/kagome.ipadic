@@ -391,6 +391,12 @@ func TestSystemDicIPAGroupList01(t *testing.T) {
 
 func BenchmarkSysDicIPA(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		loadInternalSysDic(IPADicPath)
+		loadInternalSysDic(IPADicPath, true)
+	}
+}
+
+func BenchmarkSysDicIPASimple(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		loadInternalSysDic(IPADicPath, false)
 	}
 }
