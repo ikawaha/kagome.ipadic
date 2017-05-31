@@ -51,11 +51,7 @@ func (p POSTable) WriteTo(w io.Writer) (int64, error) {
 	if err := enc.Encode(p.NameList); err != nil {
 		return 0, err
 	}
-	n, err := b.WriteTo(w)
-	if err != nil {
-		return n, nil
-	}
-	return n, nil
+	return b.WriteTo(w)
 }
 
 // ReadPOSTable loads a POS table.
