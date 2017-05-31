@@ -56,7 +56,7 @@ EOS
 # Working with GAE/Go
 
 Using fully kagome.ipadic on GAE/Go needs at least B4 instance.
-If you use the simple dictionary withcout contents other than part of speech, it will run on B1 instance.
+If you use the simple dictionary without contents other than part of speech, it will run on B1 instance.
 
 |Instance Class|Memory Limit|CPU Limit|
 |:---|:---|:---|
