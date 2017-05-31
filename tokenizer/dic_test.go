@@ -48,3 +48,11 @@ func TestSysDicIPA(t *testing.T) {
 		t.Errorf("got %p and %p, expected singleton", a.dic, b.dic)
 	}
 }
+
+func TestSysDicIPASimple(t *testing.T) {
+	a := SysDicIPASimple()
+	b := SysDicIPASimple()
+	if a.dic != b.dic {
+		t.Errorf("got %p and %p, expected singleton", a.dic, b.dic)
+	}
+}

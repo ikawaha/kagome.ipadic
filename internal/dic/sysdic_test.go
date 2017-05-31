@@ -146,7 +146,8 @@ func TestSystemDicIPACharCategory01(t *testing.T) {
 		GREEK        = 9
 		CYRILLIC     = 10
 	)
-	d := SysDicIPA()
+	d0 := SysDicIPA()
+	d1 := SysDicIPASimple()
 	type callAndRespose struct {
 		input    int
 		category byte
@@ -302,11 +303,20 @@ func TestSystemDicIPACharCategory01(t *testing.T) {
 
 	}
 	for _, cr := range testSet {
-		category := d.CharCategory[cr.input]
+		category := d0.CharCategory[cr.input]
 		if category != cr.category {
 			t.Errorf("input %04X, got %v, expected %v\n", cr.input, category, cr.category)
 		}
-		category = d.CharacterCategory(rune(cr.input))
+		category = d0.CharacterCategory(rune(cr.input))
+		if category != cr.category {
+			t.Errorf("input %04X, got %v, expected %v\n", cr.input, category, cr.category)
+		}
+
+		category = d1.CharCategory[cr.input]
+		if category != cr.category {
+			t.Errorf("input %04X, got %v, expected %v\n", cr.input, category, cr.category)
+		}
+		category = d1.CharacterCategory(rune(cr.input))
 		if category != cr.category {
 			t.Errorf("input %04X, got %v, expected %v\n", cr.input, category, cr.category)
 		}
@@ -343,9 +353,13 @@ func TestSystemDicIPAInvokeList01(t *testing.T) {
 		{GREEK, true},
 		{CYRILLIC, true},
 	}
-	d := SysDicIPA()
+	d0 := SysDicIPA()
+	d1 := SysDicIPASimple()
 	for _, cr := range crs {
-		if iv := d.InvokeList[cr.class]; iv != cr.invoke {
+		if iv := d0.InvokeList[cr.class]; iv != cr.invoke {
+			t.Errorf("input %v: got %v, expected %v\n", cr.class, iv, cr.invoke)
+		}
+		if iv := d1.InvokeList[cr.class]; iv != cr.invoke {
 			t.Errorf("input %v: got %v, expected %v\n", cr.class, iv, cr.invoke)
 		}
 	}
@@ -381,9 +395,13 @@ func TestSystemDicIPAGroupList01(t *testing.T) {
 		{GREEK, true},
 		{CYRILLIC, true},
 	}
-	d := SysDicIPA()
+	d0 := SysDicIPA()
+	d1 := SysDicIPASimple()
 	for _, cr := range crs {
-		if iv := d.GroupList[cr.class]; iv != cr.invoke {
+		if iv := d0.GroupList[cr.class]; iv != cr.invoke {
+			t.Errorf("input %v: got %v, expected %v\n", cr.class, iv, cr.invoke)
+		}
+		if iv := d1.GroupList[cr.class]; iv != cr.invoke {
 			t.Errorf("input %v: got %v, expected %v\n", cr.class, iv, cr.invoke)
 		}
 	}
@@ -391,6 +409,12 @@ func TestSystemDicIPAGroupList01(t *testing.T) {
 
 func BenchmarkSysDicIPA(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		loadInternalSysDic(IPADicPath)
+		loadInternalSysDicFull(IPADicPath)
+	}
+}
+
+func BenchmarkSysDicIPASimple(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		loadInternalSysDicSimple(IPADicPath)
 	}
 }

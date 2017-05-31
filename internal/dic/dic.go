@@ -25,6 +25,7 @@ import (
 // Dic represents a dictionary of a tokenizer.
 type Dic struct {
 	Morphs       []Morph
+	POSTable     POSTable
 	Contents     [][]string
 	Connection   ConnectionTable
 	Index        IndexTable
@@ -52,6 +53,15 @@ func (d *Dic) loadMorphDicPart(r io.Reader) error {
 		return fmt.Errorf("dic initializer, Morphs: %v", e)
 	}
 	d.Morphs = m
+	return nil
+}
+
+func (d *Dic) loadPOSDicPart(r io.Reader) error {
+	p, e := ReadPOSTable(r)
+	if e != nil {
+		return fmt.Errorf("dic initializer, POSs: %v", e)
+	}
+	d.POSTable = p
 	return nil
 }
 
@@ -135,6 +145,10 @@ func Load(path string) (d *Dic, err error) {
 			switch f.Name {
 			case "morph.dic":
 				if e = d.loadMorphDicPart(rc); e != nil {
+					return e
+				}
+			case "pos.dic":
+				if e = d.loadPOSDicPart(rc); e != nil {
 					return e
 				}
 			case "content.dic":

@@ -27,8 +27,11 @@ const (
 )
 
 var (
-	sysDicIPA     *Dic
-	initSysDicIPA sync.Once
+	sysDicIPAFull     *Dic
+	initSysDicIPAFull sync.Once
+
+	sysDicIPASimple     *Dic
+	initSysDicIPASimple sync.Once
 )
 
 // SysDic returns the kagome system dictionary.
@@ -36,15 +39,35 @@ func SysDic() *Dic {
 	return SysDicIPA()
 }
 
-// SysDicIPA returns the IPA system dictionary.
-func SysDicIPA() *Dic {
-	initSysDicIPA.Do(func() {
-		sysDicIPA = loadInternalSysDic(IPADicPath)
-	})
-	return sysDicIPA
+func SysDicSimple() *Dic {
+	return SysDicIPASimple()
 }
 
-func loadInternalSysDic(path string) (d *Dic) {
+// SysDicIPA returns the IPA system dictionary.
+func SysDicIPA() *Dic {
+	initSysDicIPAFull.Do(func() {
+		sysDicIPAFull = loadInternalSysDicFull(IPADicPath)
+	})
+	return sysDicIPAFull
+}
+
+// SysDicIPASimple returns the IPA system dictionary without contents.
+func SysDicIPASimple() *Dic {
+	initSysDicIPASimple.Do(func() {
+		sysDicIPASimple = loadInternalSysDicSimple(IPADicPath)
+	})
+	return sysDicIPASimple
+}
+
+func loadInternalSysDicFull(path string) (d *Dic) {
+	return loadInternalSysDic(path, true)
+}
+
+func loadInternalSysDicSimple(path string) (d *Dic) {
+	return loadInternalSysDic(path, false)
+}
+
+func loadInternalSysDic(path string, full bool) (d *Dic) {
 	d = new(Dic)
 	var (
 		buf []byte
@@ -57,11 +80,20 @@ func loadInternalSysDic(path string) (d *Dic) {
 	if err = d.loadMorphDicPart(bytes.NewBuffer(buf)); err != nil {
 		panic(err)
 	}
-	// content.dic
-	if buf, err = data.Asset(path + "/content.dic"); err != nil {
+	// pos.dic
+	if buf, err = data.Asset(path + "/pos.dic"); err != nil {
 		panic(err)
 	}
-	d.Contents = NewContents(buf)
+	if err = d.loadPOSDicPart(bytes.NewBuffer(buf)); err != nil {
+		panic(err)
+	}
+	if full {
+		// content.dic
+		if buf, err = data.Asset(path + "/content.dic"); err != nil {
+			panic(err)
+		}
+		d.Contents = NewContents(buf)
+	}
 	// index.dic
 	if buf, err = data.Asset(path + "/index.dic"); err != nil {
 		panic(err)
