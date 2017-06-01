@@ -36,7 +36,7 @@ import (
 var (
 	CommandName  = "server"
 	Description  = `run tokenize server`
-	usageMessage = "%s [-http=:6060] [-udic userdic_file] \n"
+	usageMessage = "%s [-http=:6060] [-udic userdic_file] [-sysdic (normal|simple)]\n"
 	ErrorWriter  = os.Stderr
 )
 
@@ -44,6 +44,7 @@ var (
 type option struct {
 	http    string
 	udic    string
+	sysdic  string
 	flagSet *flag.FlagSet
 }
 
@@ -57,6 +58,7 @@ func newOption(w io.Writer, eh flag.ErrorHandling) (o *option) {
 	// option settings
 	o.flagSet.StringVar(&o.http, "http", ":6060", "HTTP service address")
 	o.flagSet.StringVar(&o.udic, "udic", "", "user dictionary")
+	o.flagSet.StringVar(&o.sysdic, "sysdic", "normal", "system dictionary type (normal|simple)")
 	return
 }
 
@@ -67,6 +69,9 @@ func (o *option) parse(args []string) (err error) {
 	// validations
 	if nonFlag := o.flagSet.Args(); len(nonFlag) != 0 {
 		return fmt.Errorf("invalid argument: %v", nonFlag)
+	}
+	if o.sysdic != "" && o.sysdic != "normal" && o.sysdic != "simple" {
+		return fmt.Errorf("invalid argument: -sysdic %v\n", o.sysdic)
 	}
 	return
 }
@@ -82,7 +87,12 @@ func OptionCheck(args []string) (err error) {
 
 // command main
 func command(opt *option) error {
-	dic := tokenizer.SysDic()
+	var dic tokenizer.Dic
+	if opt.sysdic == "simple" {
+		dic = tokenizer.SysDicIPASimple()
+	} else {
+		dic = tokenizer.SysDic()
+	}
 	t := tokenizer.NewWithDic(dic)
 
 	var udic tokenizer.UserDic

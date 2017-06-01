@@ -26,11 +26,15 @@ func TestDicLoad(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	if expected, c := 392126, len(dic.Morphs); c != expected {
-		t.Errorf("got %v, expected %v\n", c, expected)
+	const expected = 392126
+	if c := len(dic.Morphs); c != expected {
+		t.Errorf("morphs got %v, expected %v\n", c, expected)
 	}
-	if expected, c := 392126, len(dic.Contents); c != expected {
-		t.Errorf("got %v, expected %v\n", c, expected)
+	if c := len(dic.POSTable.POSs); c != expected {
+		t.Errorf("POSs got %v, expected %v\n", c, expected)
+	}
+	if c := len(dic.Contents); c != expected {
+		t.Errorf("contents got %v, expected %v\n", c, expected)
 	}
 }
 

@@ -43,6 +43,7 @@ const (
 
 	ipaDicArchiveFileName    = "ipa.dic"
 	ipaDicMorphFileName      = "morph.dic"
+	ipaDicPOSFileName        = "pos.dic"
 	ipaDicContentFileName    = "content.dic"
 	ipaDicIndexFileName      = "index.dic"
 	ipaDicConnectionFileName = "connection.dic"
@@ -54,7 +55,8 @@ const (
 	ipaMorphRecordLeftIDIndex             = 1
 	ipaMorphRecordRightIDIndex            = 2
 	ipaMorphRecordWeightIndex             = 3
-	ipaMorphRecordOtherContentsStartIndex = 4
+	ipaMorphRecordPOSRecordStartIndex     = 4
+	ipaMorphRecordOtherContentsStartIndex = 10
 
 	ipaUnkRecordSize                    = 11
 	ipaUnkRecordCategoryIndex           = 0
@@ -66,6 +68,7 @@ const (
 
 type IpaDic struct {
 	Morphs       []dic.Morph
+	POSTable     dic.POSTable
 	Contents     [][]string
 	Index        dic.IndexTable
 	Connection   dic.ConnectionTable
@@ -82,104 +85,11 @@ type IpaDic struct {
 
 type ipaDicPath struct {
 	Morph      string
+	POS        string
 	Index      string
 	Connection string
 	CharDef    string
 	Unk        string
-}
-
-func loadIpaDic(path ipaDicPath) (d *IpaDic, err error) {
-	d = new(IpaDic)
-	if err = func() error {
-		f, e := os.Open(path.Morph)
-		if e != nil {
-			return e
-		}
-		dec := gob.NewDecoder(f)
-		if e = dec.Decode(&d.Morphs); e != nil {
-			return e
-		}
-		if e = dec.Decode(&d.Contents); e != nil {
-			return e
-		}
-		return nil
-	}(); err != nil {
-		return
-	}
-	if err = func() error {
-		f, e := os.Open(path.Index)
-		if e != nil {
-			return e
-		}
-		idx, e := dic.ReadIndexTable(f)
-		if e != nil {
-			return e
-		}
-		d.Index = idx
-		return nil
-	}(); err != nil {
-		return
-	}
-	if err = func() error {
-		f, e := os.Open(path.Connection)
-		if e != nil {
-			return e
-		}
-		dec := gob.NewDecoder(f)
-		if e = dec.Decode(&d.Connection); e != nil {
-			return e
-		}
-		return nil
-	}(); err != nil {
-		return
-	}
-
-	if err = func() error {
-		f, e := os.Open(path.CharDef)
-		if e != nil {
-			return e
-		}
-		dec := gob.NewDecoder(f)
-		if e = dec.Decode(&d.CharClass); e != nil {
-			return e
-		}
-		if e = dec.Decode(&d.CharCategory); e != nil {
-			return e
-		}
-		if e = dec.Decode(&d.InvokeList); e != nil {
-			return e
-		}
-		if e = dec.Decode(&d.GroupList); e != nil {
-			return e
-		}
-		return nil
-	}(); err != nil {
-		return
-	}
-
-	if err = func() error {
-		f, e := os.Open(path.Unk)
-		if e != nil {
-			return e
-		}
-		dec := gob.NewDecoder(f)
-		if e = dec.Decode(&d.UnkMorphs); e != nil {
-			return e
-		}
-		if e = dec.Decode(&d.UnkIndex); e != nil {
-			return e
-		}
-		if e = dec.Decode(&d.UnkIndexDup); e != nil {
-			return e
-		}
-		if e = dec.Decode(&d.UnkContents); e != nil {
-			return e
-		}
-		return nil
-	}(); err != nil {
-		return
-	}
-	return
 }
 
 type ipaMorphRecordSlice [][]string
@@ -217,6 +127,30 @@ func saveIpaDic(d *IpaDic, base string, archive bool) (err error) {
 			out = f
 		}
 		if _, e = dic.MorphSlice(d.Morphs).WriteTo(out); e != nil {
+			return
+		}
+		return
+	}(); err != nil {
+		return
+	}
+
+	if err = func() (e error) {
+		p := path.Join(base, ipaDicPOSFileName)
+		var out io.Writer
+		if archive {
+			out, e = zw.Create(p)
+			if e != nil {
+				return
+			}
+		} else {
+			var f *os.File
+			if f, e = os.OpenFile(p, os.O_RDWR|os.O_TRUNC|os.O_CREATE, 0666); e != nil {
+				return
+			}
+			defer f.Close()
+			out = f
+		}
+		if _, e = dic.POSTable(d.POSTable).WriteTo(out); e != nil {
 			return
 		}
 		return
@@ -468,8 +402,14 @@ func buildIpaDic(mecabPath, neologdPath string) (d *IpaDic, err error) {
 	sort.Sort(records)
 	d = new(IpaDic)
 	d.Morphs = make([]dic.Morph, 0, len(records))
+	d.POSTable = dic.POSTable{
+		POSs: make([]dic.POS, 0, len(records)),
+	}
 	d.Contents = make([][]string, 0, len(records))
-	var keywords []string
+	var (
+		keywords []string
+		posMap   = make(dic.POSMap)
+	)
 	for _, rec := range records {
 		keywords = append(keywords, rec[ipaMrophRecordSurfaceIndex])
 		var l, r, w int
@@ -484,8 +424,12 @@ func buildIpaDic(mecabPath, neologdPath string) (d *IpaDic, err error) {
 		}
 		m := dic.Morph{LeftID: int16(l), RightID: int16(r), Weight: int16(w)}
 		d.Morphs = append(d.Morphs, m)
+		d.POSTable.POSs = append(d.POSTable.POSs, posMap.Add(
+			rec[ipaMorphRecordPOSRecordStartIndex:ipaMorphRecordOtherContentsStartIndex]),
+		)
 		d.Contents = append(d.Contents, rec[ipaMorphRecordOtherContentsStartIndex:])
 	}
+	d.POSTable.NameList = posMap.List()
 
 	if d.Index, err = dic.BuildIndexTable(keywords); err != nil {
 		return
