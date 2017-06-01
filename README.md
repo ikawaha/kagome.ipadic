@@ -55,8 +55,9 @@ EOS
 
 # Working with GAE/Go
 
-Using fully kagome.ipadic on GAE/Go needs at least B4 instance.
-If you use the simple dictionary without contents other than part of speech, it will run on B1 instance.
+Using fully kagome.ipadic on GAE/Go needs at least B4 instance (>512MB memory).
+If you use a simple dictionary without contents other than part of speech, it will be able to run on B1 instance.
+Even in that case, the analysis result does not change, the output contents (`活用型`, `活用形`, `基本形`, `読み`, `発音`) are omitted.
 
 |Instance Class|Memory Limit|CPU Limit|
 |:---|:---|:---|
@@ -70,7 +71,7 @@ If you use the simple dictionary without contents other than part of speech, it 
 |F4|512 MB|2.4 Ghz|
 |F4_1G|1024 MB|2.4 Ghz|
 
-## Usage:
+## Usage
 
 ```
 command:
