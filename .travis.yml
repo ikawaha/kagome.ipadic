@@ -1,9 +1,9 @@
 language: go
 
 go:
-  - 1.6.3
-  - 1.7.3
-  - 1.8.3
+  - "1.10.x"
+  - "1.11.x"
+  - "1.12.x"
   - tip
 
 sudo: false
@@ -14,8 +14,6 @@ before_install:
   - go get github.com/axw/gocov/gocov
   - go get github.com/mattn/goveralls
   - go get golang.org/x/tools/cmd/cover
-
-install:
 
 script:
   - go test ./...
