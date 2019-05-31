@@ -21,12 +21,16 @@ import (
 
 var testDic = "../../_sample/ipa.dic"
 
+const(
+	IPADICEntrySize = 392126 + 1
+)
+
 func TestDicLoad(t *testing.T) {
 	dic, err := Load(testDic)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	const expected = 392126
+	const expected = IPADICEntrySize
 	if c := len(dic.Morphs); c != expected {
 		t.Errorf("morphs got %v, expected %v\n", c, expected)
 	}
