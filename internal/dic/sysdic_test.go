@@ -22,7 +22,7 @@ import (
 func TestSystemDic(t *testing.T) {
 	d := SysDic() // load default ipadic
 
-	const expected = 392126
+	const expected = IPADICEntrySize
 	c := len(d.Morphs)
 	if c != expected {
 		t.Errorf("got %v, expected %v\n", c, expected)
@@ -38,7 +38,7 @@ func TestSystemDicIPAPath01(t *testing.T) {
 
 func TestSystemDicIPAMorphs01(t *testing.T) {
 	d := SysDicIPA()
-	const expected = 392126
+	const expected = IPADICEntrySize
 	c := len(d.Morphs)
 	if c != expected {
 		t.Errorf("got %v, expected %v\n", c, expected)
@@ -47,7 +47,7 @@ func TestSystemDicIPAMorphs01(t *testing.T) {
 
 func TestSystemDicIPAContents01(t *testing.T) {
 	d := SysDicIPA()
-	const expected = 392126
+	const expected = IPADICEntrySize
 	c := len(d.Contents)
 	if c != expected {
 		t.Errorf("got %v, expected %v\n", c, expected)
