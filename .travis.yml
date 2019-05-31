@@ -7,7 +7,6 @@ go:
   - tip
 
 sudo: false
-cache: bundler
 
 before_install:
   - pip install --user codecov
