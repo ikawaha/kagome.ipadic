@@ -73,9 +73,15 @@
   <script src="wasm_exec.js"></script>
   <script>
     const go = new Go();
-    WebAssembly.instantiateStreaming(fetch("kagome.wasm"), go.importObject).then((result) => {
-      go.run(result.instance);
-    });
+    if (WebAssembly.instantiateStreaming) {
+      WebAssembly.instantiateStreaming(fetch("kagome.wasm"), go.importObject).then((result) => {
+        go.run(result.instance);
+      });
+    }else{
+      fetch('kagome.wasm').then(response => response.arrayBuffer()
+      ).then(bytes => WebAssembly.instantiate(bytes, go.importObject)
+      ).then(result => go.run(result.instance));
+    }
   </script>
   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.0/jquery.min.js"></script>
 </head>
