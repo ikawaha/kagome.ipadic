@@ -39,6 +39,7 @@ func SysDic() *Dic {
 	return SysDicIPA()
 }
 
+// SysDicSimple returns the kagome system dictionary without contents.
 func SysDicSimple() *Dic {
 	return SysDicIPASimple()
 }

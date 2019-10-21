@@ -72,10 +72,14 @@ func New(d *dic.Dic, u *dic.UserDic) *Lattice {
 // Free releases a memory of a lattice.
 func (la *Lattice) Free() {
 	la.Input = ""
+	for i := range la.Output {
+		la.Output[i] = nil
+	}
 	la.Output = la.Output[:0]
 	for i := range la.list {
 		for j := range la.list[i] {
 			nodePool.Put(la.list[i][j])
+			la.list[i][j] = nil
 		}
 		la.list[i] = la.list[i][:0]
 	}
@@ -172,14 +176,13 @@ func (la *Lattice) Build(inp string) {
 			for i, w := pos, 0; i < endPos; i += w {
 				_, w = utf8.DecodeRuneInString(inp[i:])
 				end := i + w
-				dup, _ := la.dic.UnkIndexDup[int32(class)]
+				dup := la.dic.UnkIndexDup[int32(class)]
 				for x := 0; x < int(dup)+1; x++ {
 					la.addNode(runePos, int(id)+x, runePos, UNKNOWN, inp[pos:end])
 				}
 			}
 		}
 	}
-	return
 }
 
 // String returns a debug string of a lattice.
@@ -244,7 +247,6 @@ func (la *Lattice) Forward(m TokenizeMode) {
 			}
 		}
 	}
-	return
 }
 
 // Backward runs backward algorithm of the Viterbi.
@@ -268,12 +270,12 @@ func (la *Lattice) Backward(m TokenizeMode) {
 		stack := make([]*node, 0, runeLen)
 		i := 0
 		for _, r := range p.Surface {
-			n := nodePool.Get().(*node)
-			n.ID = p.ID
-			n.Start = p.Start + i
-			n.Class = DUMMY
-			n.Surface = string(r)
-			stack = append(stack, n)
+			stack = append(stack, &node{
+				ID:      p.ID,
+				Start:   p.Start + i,
+				Class:   DUMMY,
+				Surface: string(r),
+			})
 			i++
 		}
 		for j, end := 0, len(stack); j < end; j++ {
