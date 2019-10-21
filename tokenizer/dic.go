@@ -31,7 +31,7 @@ func SysDicIPA() Dic {
 	return Dic{dic.SysDicIPA()}
 }
 
-// SysDicIPA returns the simple IPA dictionary as the system dictionary (w/o contents).
+// SysDicIPASimple returns the simple IPA dictionary as the system dictionary (w/o contents).
 func SysDicIPASimple() Dic {
 	return Dic{dic.SysDicIPASimple()}
 }

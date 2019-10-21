@@ -71,7 +71,7 @@ func (o *option) parse(args []string) (err error) {
 		return fmt.Errorf("invalid argument: %v", nonFlag)
 	}
 	if o.sysdic != "" && o.sysdic != "normal" && o.sysdic != "simple" {
-		return fmt.Errorf("invalid argument: -sysdic %v\n", o.sysdic)
+		return fmt.Errorf("invalid argument: -sysdic %v", o.sysdic)
 	}
 	return
 }

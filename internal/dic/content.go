@@ -33,7 +33,7 @@ func (c Contents) WriteTo(w io.Writer) (n int64, err error) {
 	for i := 0; i < len(c)-1; i++ {
 		x, e := fmt.Fprintf(w, "%s%s", strings.Join(c[i], colDelimiter), rowDelimiter)
 		if e != nil {
-			return
+			return n, e
 		}
 		n += int64(x)
 	}
