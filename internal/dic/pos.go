@@ -21,6 +21,7 @@ import (
 	"io"
 )
 
+// POSTable represents a table for managing part of speeches.
 type POSTable struct {
 	POSs     []POS
 	NameList []string

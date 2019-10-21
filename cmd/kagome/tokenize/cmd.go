@@ -75,10 +75,10 @@ func (o *option) parse(args []string) (err error) {
 		return fmt.Errorf("invalid argument: %v", nonFlag)
 	}
 	if o.mode != "" && o.mode != "normal" && o.mode != "search" && o.mode != "extended" {
-		return fmt.Errorf("invalid argument: -mode %v\n", o.mode)
+		return fmt.Errorf("invalid argument: -mode %v", o.mode)
 	}
 	if o.sysdic != "" && o.sysdic != "normal" && o.sysdic != "simple" {
-		return fmt.Errorf("invalid argument: -sysdic %v\n", o.sysdic)
+		return fmt.Errorf("invalid argument: -sysdic %v", o.sysdic)
 	}
 	return
 }
@@ -133,7 +133,6 @@ func command(opt *option) error {
 	switch opt.mode {
 	case "normal":
 		mode = tokenizer.Normal
-		break
 	case "search":
 		mode = tokenizer.Search
 	case "extended":
