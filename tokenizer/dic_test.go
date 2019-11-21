@@ -20,7 +20,7 @@ import (
 
 var testDic = "../_sample/ipa.dic"
 
-const(
+const (
 	IPADICEntrySize = 392126 + 1
 )
 
