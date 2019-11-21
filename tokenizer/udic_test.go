@@ -25,7 +25,7 @@ var testFile = "../_sample/userdic.txt"
 
 func TestNewUserDic01(t *testing.T) {
 	if _, e := NewUserDic(""); e == nil {
-		t.Error("expected error, but no occured\n")
+		t.Error("expected error, but no occurred\n")
 	}
 }
 
@@ -47,7 +47,7 @@ func TestNewUserDicIndex01(t *testing.T) {
 	}
 	for _, cr := range callAndRespose {
 		if ids := udic.dic.Index.Search(cr.inp); (len(ids) != 0) != cr.ok {
-			t.Errorf("got %v, expected %v\n", ids, cr.ok)
+			t.Errorf("got %v, expected %v", ids, cr.ok)
 		}
 	}
 }

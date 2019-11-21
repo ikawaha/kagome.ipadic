@@ -21,7 +21,7 @@ import (
 
 var testDic = "../../_sample/ipa.dic"
 
-const(
+const (
 	IPADICEntrySize = 392126 + 1
 )
 
@@ -32,13 +32,13 @@ func TestDicLoad(t *testing.T) {
 	}
 	const expected = IPADICEntrySize
 	if c := len(dic.Morphs); c != expected {
-		t.Errorf("morphs got %v, expected %v\n", c, expected)
+		t.Errorf("morphs got %v, expected %v", c, expected)
 	}
 	if c := len(dic.POSTable.POSs); c != expected {
-		t.Errorf("POSs got %v, expected %v\n", c, expected)
+		t.Errorf("POSs got %v, expected %v", c, expected)
 	}
 	if c := len(dic.Contents); c != expected {
-		t.Errorf("contents got %v, expected %v\n", c, expected)
+		t.Errorf("contents got %v, expected %v", c, expected)
 	}
 }
 
@@ -57,7 +57,7 @@ func TestDicIndex01(t *testing.T) {
 	for _, cr := range testSet {
 		ids := dic.Index.Search(cr.input)
 		if !reflect.DeepEqual(ids, cr.ids) {
-			t.Errorf("input %v, got %v, expected %v\n", cr.input, ids, cr.ids)
+			t.Errorf("input %v, got %v, expected %v", cr.input, ids, cr.ids)
 		}
 	}
 }
@@ -94,13 +94,13 @@ func TestDicIndex02(t *testing.T) {
 	for _, cr := range testSet {
 		lens, ids := dic.Index.CommonPrefixSearch(cr.input)
 		if !reflect.DeepEqual(lens, cr.lens) {
-			t.Errorf("input %v, got lens %v,\n expected %v\n", cr.input, lens, cr.lens)
+			t.Errorf("input %v, got lens %v,\n expected %v", cr.input, lens, cr.lens)
 		}
 		if len(ids) != len(cr.ids) {
-			t.Errorf("input %v, got ids len %v, expected len %v\n", cr.input, len(ids), len(cr.ids))
+			t.Errorf("input %v, got ids len %v, expected len %v", cr.input, len(ids), len(cr.ids))
 		}
 		if !reflect.DeepEqual(ids, cr.ids) {
-			t.Errorf("input %v, got ids %v,\n expected %v\n", cr.input, ids, cr.ids)
+			t.Errorf("input %v, got ids %v,\n expected %v", cr.input, ids, cr.ids)
 		}
 	}
 
@@ -125,7 +125,7 @@ func TestDicCharClass01(t *testing.T) {
 		"CYRILLIC",     //10
 	}
 	if !reflect.DeepEqual(dic.CharClass, expected) {
-		t.Errorf("got %v, expected %v\n", dic.CharClass, expected)
+		t.Errorf("got %v, expected %v", dic.CharClass, expected)
 	}
 }
 
@@ -304,11 +304,11 @@ func TestDicCharCategory01(t *testing.T) {
 	for _, cr := range testSet {
 		category := dic.CharCategory[cr.input]
 		if category != cr.category {
-			t.Errorf("input %04X, got %v, expected %v\n", cr.input, category, cr.category)
+			t.Errorf("input %04X, got %v, expected %v", cr.input, category, cr.category)
 		}
 		category = dic.CharacterCategory(rune(cr.input))
 		if category != cr.category {
-			t.Errorf("input %04X, got %v, expected %v\n", cr.input, category, cr.category)
+			t.Errorf("input %04X, got %v, expected %v", cr.input, category, cr.category)
 		}
 	}
 }
@@ -362,7 +362,7 @@ func TestDicInvokeList01(t *testing.T) {
 	}
 	for _, cr := range crs {
 		if iv := dic.InvokeList[cr.class]; iv != cr.invoke {
-			t.Errorf("input %v: got %v, expected %v\n", cr.class, iv, cr.invoke)
+			t.Errorf("input %v: got %v, expected %v", cr.class, iv, cr.invoke)
 		}
 	}
 }
@@ -403,7 +403,7 @@ func TestDicGroupList01(t *testing.T) {
 	}
 	for _, cr := range crs {
 		if iv := dic.GroupList[cr.class]; iv != cr.invoke {
-			t.Errorf("input %v: got %v, expected %v\n", cr.class, iv, cr.invoke)
+			t.Errorf("input %v: got %v, expected %v", cr.class, iv, cr.invoke)
 		}
 	}
 }
