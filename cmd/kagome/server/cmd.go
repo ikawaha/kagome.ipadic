@@ -191,11 +191,11 @@ type TokenizeDemoHandler struct {
 
 func (h *TokenizeDemoHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	type record struct {
-		Surface        string
-		Pos            string
-		Baseform       string
-		Reading        string
-		Pronounciation string
+		Surface       string
+		Pos           string
+		Baseform      string
+		Reading       string
+		Pronunciation string
 	}
 	sen := r.FormValue("s")
 	mode := r.FormValue("r")
@@ -280,27 +280,27 @@ func (h *TokenizeDemoHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) 
 				m.Pos = strings.Join(fs[0:5], ",")
 				m.Baseform = fs[10]
 				m.Reading = fs[6]
-				m.Pronounciation = fs[9]
+				m.Pronunciation = fs[9]
 			case 9:
 				m.Pos = strings.Join(fs[0:5], ",")
 				m.Baseform = fs[6]
 				m.Reading = fs[7]
-				m.Pronounciation = fs[8]
+				m.Pronunciation = fs[8]
 			case 7:
 				m.Pos = strings.Join(fs[0:5], ",")
 				m.Baseform = fs[6]
 				m.Reading = "*"
-				m.Pronounciation = "*"
+				m.Pronunciation = "*"
 			case 6: // unidic
 				m.Pos = strings.Join(fs[0:5], ",")
 				m.Baseform = "*"
 				m.Reading = "*"
-				m.Pronounciation = "*"
+				m.Pronunciation = "*"
 			case 3:
 				m.Pos = fs[0]
 				m.Baseform = fs[1]
 				m.Reading = fs[2]
-				m.Pronounciation = "*"
+				m.Pronunciation = "*"
 
 			}
 			records = append(records, m)
@@ -393,7 +393,7 @@ var graphHTML = `
       <th>Part-of-Speech</th>
       <th>Base Form</th>
       <th>Reading</th>
-      <th>Pronounciation</th>
+      <th>Pronunciation</th>
     </tr></thread>
     <tbody id="morphs">
     {{range .Tokens}}
@@ -402,7 +402,7 @@ var graphHTML = `
       <td>{{.Pos}}</td>
       <td>{{.Baseform}}</td>
       <td>{{.Reading}}</td>
-      <td>{{.Pronounciation}}</td>
+      <td>{{.Pronunciation}}</td>
       </tr>
     {{end}}
     </tbody>
@@ -528,7 +528,7 @@ var demoHTML = `
       <th>Part-of-Speech</th>
       <th>Base Form</th>
       <th>Reading</th>
-      <th>Pronounciation</th>
+      <th>Pronunciation</th>
     </tr></thread>
     <tbody id="morphs">
     </tbody>

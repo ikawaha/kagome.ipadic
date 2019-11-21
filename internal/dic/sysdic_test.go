@@ -25,14 +25,14 @@ func TestSystemDic(t *testing.T) {
 	const expected = IPADICEntrySize
 	c := len(d.Morphs)
 	if c != expected {
-		t.Errorf("got %v, expected %v\n", c, expected)
+		t.Errorf("got %v, expected %v", c, expected)
 	}
 }
 
 func TestSystemDicIPAPath01(t *testing.T) {
 	expected := "dic/ipa"
 	if IPADicPath != expected {
-		t.Errorf("got %v, expected %v\n", IPADicPath, expected)
+		t.Errorf("got %v, expected %v", IPADicPath, expected)
 	}
 }
 
@@ -41,7 +41,7 @@ func TestSystemDicIPAMorphs01(t *testing.T) {
 	const expected = IPADICEntrySize
 	c := len(d.Morphs)
 	if c != expected {
-		t.Errorf("got %v, expected %v\n", c, expected)
+		t.Errorf("got %v, expected %v", c, expected)
 	}
 }
 
@@ -50,7 +50,7 @@ func TestSystemDicIPAContents01(t *testing.T) {
 	const expected = IPADICEntrySize
 	c := len(d.Contents)
 	if c != expected {
-		t.Errorf("got %v, expected %v\n", c, expected)
+		t.Errorf("got %v, expected %v", c, expected)
 	}
 }
 
@@ -66,7 +66,7 @@ func TestSystemDicIPAIndex01(t *testing.T) {
 	for _, cr := range testSet {
 		ids := d.Index.Search(cr.input)
 		if !reflect.DeepEqual(ids, cr.ids) {
-			t.Errorf("input %v, got %v, expected %v\n", cr.input, ids, cr.ids)
+			t.Errorf("input %v, got %v, expected %v", cr.input, ids, cr.ids)
 		}
 	}
 }
@@ -100,13 +100,13 @@ func TestSystemDicIPAIndex02(t *testing.T) {
 	for _, cr := range testSet {
 		lens, ids := d.Index.CommonPrefixSearch(cr.input)
 		if !reflect.DeepEqual(lens, cr.lens) {
-			t.Errorf("input %v, got lens %v,\n expected %v\n", cr.input, lens, cr.lens)
+			t.Errorf("input %v, got lens %v,\n expected %v", cr.input, lens, cr.lens)
 		}
 		if len(ids) != len(cr.ids) {
-			t.Errorf("input %v, got ids len %v, expected len %v\n", cr.input, len(ids), len(cr.ids))
+			t.Errorf("input %v, got ids len %v, expected len %v", cr.input, len(ids), len(cr.ids))
 		}
 		if !reflect.DeepEqual(ids, cr.ids) {
-			t.Errorf("input %v, got ids %v,\n expected %v\n", cr.input, ids, cr.ids)
+			t.Errorf("input %v, got ids %v,\n expected %v", cr.input, ids, cr.ids)
 		}
 	}
 
@@ -128,7 +128,7 @@ func TestSystemDicIPACharClass01(t *testing.T) {
 		"CYRILLIC",     //10
 	}
 	if !reflect.DeepEqual(d.CharClass, expected) {
-		t.Errorf("got %v, expected %v\n", d.CharClass, expected)
+		t.Errorf("got %v, expected %v", d.CharClass, expected)
 	}
 }
 
@@ -305,20 +305,20 @@ func TestSystemDicIPACharCategory01(t *testing.T) {
 	for _, cr := range testSet {
 		category := d0.CharCategory[cr.input]
 		if category != cr.category {
-			t.Errorf("input %04X, got %v, expected %v\n", cr.input, category, cr.category)
+			t.Errorf("input %04X, got %v, expected %v", cr.input, category, cr.category)
 		}
 		category = d0.CharacterCategory(rune(cr.input))
 		if category != cr.category {
-			t.Errorf("input %04X, got %v, expected %v\n", cr.input, category, cr.category)
+			t.Errorf("input %04X, got %v, expected %v", cr.input, category, cr.category)
 		}
 
 		category = d1.CharCategory[cr.input]
 		if category != cr.category {
-			t.Errorf("input %04X, got %v, expected %v\n", cr.input, category, cr.category)
+			t.Errorf("input %04X, got %v, expected %v", cr.input, category, cr.category)
 		}
 		category = d1.CharacterCategory(rune(cr.input))
 		if category != cr.category {
-			t.Errorf("input %04X, got %v, expected %v\n", cr.input, category, cr.category)
+			t.Errorf("input %04X, got %v, expected %v", cr.input, category, cr.category)
 		}
 	}
 }
@@ -357,10 +357,10 @@ func TestSystemDicIPAInvokeList01(t *testing.T) {
 	d1 := SysDicIPASimple()
 	for _, cr := range crs {
 		if iv := d0.InvokeList[cr.class]; iv != cr.invoke {
-			t.Errorf("input %v: got %v, expected %v\n", cr.class, iv, cr.invoke)
+			t.Errorf("input %v: got %v, expected %v", cr.class, iv, cr.invoke)
 		}
 		if iv := d1.InvokeList[cr.class]; iv != cr.invoke {
-			t.Errorf("input %v: got %v, expected %v\n", cr.class, iv, cr.invoke)
+			t.Errorf("input %v: got %v, expected %v", cr.class, iv, cr.invoke)
 		}
 	}
 }
@@ -399,10 +399,10 @@ func TestSystemDicIPAGroupList01(t *testing.T) {
 	d1 := SysDicIPASimple()
 	for _, cr := range crs {
 		if iv := d0.GroupList[cr.class]; iv != cr.invoke {
-			t.Errorf("input %v: got %v, expected %v\n", cr.class, iv, cr.invoke)
+			t.Errorf("input %v: got %v, expected %v", cr.class, iv, cr.invoke)
 		}
 		if iv := d1.GroupList[cr.class]; iv != cr.invoke {
-			t.Errorf("input %v: got %v, expected %v\n", cr.class, iv, cr.invoke)
+			t.Errorf("input %v: got %v, expected %v", cr.class, iv, cr.invoke)
 		}
 	}
 }

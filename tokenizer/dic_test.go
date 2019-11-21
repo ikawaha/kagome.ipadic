@@ -30,10 +30,10 @@ func TestNewDic(t *testing.T) {
 		t.Fatalf("unexpected error: %v", err)
 	}
 	if expected, c := IPADICEntrySize, len(d.dic.Morphs); c != expected {
-		t.Errorf("got %v, expected %v\n", c, expected)
+		t.Errorf("got %v, expected %v", c, expected)
 	}
 	if expected, c := IPADICEntrySize, len(d.dic.Contents); c != expected {
-		t.Errorf("got %v, expected %v\n", c, expected)
+		t.Errorf("got %v, expected %v", c, expected)
 	}
 }
 
